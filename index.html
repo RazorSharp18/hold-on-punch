@@ -373,6 +373,40 @@
             text-align: center;
         }
         
+        /* Love counter on landing page */
+        .love-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.95);
+            padding: 12px 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 200;
+            font-size: 14px;
+            color: #8b5a2b;
+            max-width: 250px;
+        }
+        
+        .love-counter .count {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ff6b6b;
+        }
+        
+        .love-counter .recent {
+            font-size: 12px;
+            margin-top: 8px;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 8px;
+        }
+        
+        .love-counter .recent-name {
+            font-weight: 600;
+            color: #ff6b6b;
+        }
+        
         #win-screen {
             background: linear-gradient(180deg, #fff5f5 0%, #ffe4e4 100%);
         }
@@ -587,6 +621,12 @@
         
         <div class="achievement-popup" id="achievement">🏆 First Banana!</div>
         
+        <!-- Love Counter on Landing Page -->
+        <div class="love-counter" id="love-counter">
+            <div>💕 <span class="count" id="love-count">0</span> notes for Punch!</div>
+            <div class="recent" id="recent-lover"></div>
+        </div>
+        
         <!-- Mobile Touch Controls -->
         <div id="mobile-controls">
             <div class="touch-dpad">
@@ -726,9 +766,40 @@ function setupTouchControls() {
     });
 }
 
+// Load love count for landing page
+async function loadLoveCount() {
+    if (!supabaseClient) return;
+    
+    try {
+        const { count, error } = await supabaseClient
+            .from('punch_love')
+            .select('*', { count: 'exact', head: true });
+        
+        if (!error && count !== null) {
+            document.getElementById('love-count').textContent = count;
+        }
+        
+        // Get most recent note
+        const { data } = await supabaseClient
+            .from('punch_love')
+            .select('player_name, message')
+            .order('created_at', { ascending: false })
+            .limit(1);
+        
+        if (data && data.length > 0) {
+            const recent = data[0];
+            const recentEl = document.getElementById('recent-lover');
+            recentEl.innerHTML = `Latest: <span class="recent-name">${escapeHtml(recent.player_name)}</span>${recent.message ? ' - "' + escapeHtml(recent.message.substring(0, 30)) + (recent.message.length > 30 ? '...' : '') + '"' : ''}`;
+        }
+    } catch (e) {
+        console.log('Could not load love count');
+    }
+}
+
 // Load love messages on page load
 document.addEventListener('DOMContentLoaded', () => {
     loadLoveMessages();
+    loadLoveCount();
     setupTouchControls();
 });
 
@@ -973,8 +1044,29 @@ class PunchAudio {
     }
 }
 
-// Level definitions - 1 level adventure!
+// Level definitions - 2 levels!
 const LEVELS = [
+    {
+        name: "The Forest Edge",
+        platforms: [
+            { x: 0, y: 0, w: 14, color: 0x8fbc8f },
+            { x: 14, y: 3, w: 6, color: 0x90ee90 },
+            { x: 22, y: 5, w: 6, color: 0x8fbc8f },
+            { x: 30, y: 3, w: 7, color: 0x90ee90 },
+            { x: 40, y: 5, w: 6, color: 0x8fbc8f },
+            { x: 48, y: 3, w: 8, color: 0x90ee90 },
+            { x: 58, y: 0, w: 14, color: 0x8fbc8f },
+        ],
+        bananas: [
+            { x: 5, y: 3 }, { x: 16, y: 6 }, { x: 24, y: 8 },
+            { x: 34, y: 6 }, { x: 43, y: 8 }, { x: 52, y: 6 },
+            { x: 62, y: 3 }
+        ],
+        rogueMonkeys: [
+            { x: 35, y: 6, patrolMin: 29, patrolMax: 38 }
+        ],
+        stuffedFriend: { x: 65, y: 3 }
+    },
     {
         name: "Rescue Mission",
         platforms: [
@@ -993,7 +1085,6 @@ const LEVELS = [
             { x: 30, y: 6 }, { x: 37, y: 9 }, { x: 45, y: 7 },
             { x: 52, y: 9 }, { x: 60, y: 6 }, { x: 70, y: 3 }
         ],
-        // Golden banana - worth 500 points! (harder to reach)
         goldenBanana: { x: 37, y: 12 },
         rogueMonkeys: [
             { x: 22, y: 8, patrolMin: 19, patrolMax: 26 },
@@ -1098,6 +1189,9 @@ class PunchGame {
         // Event listeners
         window.addEventListener('resize', () => this.resize());
         window.addEventListener('keydown', e => {
+            // Don't capture keys when typing in input fields
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
             this.keys[e.key.toLowerCase()] = true;
             if (e.key === ' ') e.preventDefault();
             // Shoot with X key
@@ -1105,7 +1199,10 @@ class PunchGame {
                 this.shoot();
             }
         });
-        window.addEventListener('keyup', e => this.keys[e.key.toLowerCase()] = false);
+        window.addEventListener('keyup', e => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            this.keys[e.key.toLowerCase()] = false;
+        });
         
         // Button handlers - using both onclick and addEventListener for mobile compatibility
         const startBtn = document.getElementById('start-btn');
@@ -2041,6 +2138,9 @@ class PunchGame {
         document.getElementById('player-name').value = '';
         document.getElementById('player-message').value = '';
         
+        // Hide love counter during game
+        document.getElementById('love-counter').style.display = 'none';
+        
         // Show HUD
         document.getElementById('hud').classList.add('visible');
         
@@ -2114,6 +2214,8 @@ class PunchGame {
         }, 100);
         
         document.getElementById('hud').classList.remove('visible');
+        document.getElementById('love-counter').style.display = 'block';
+        loadLoveCount();
     }
     
     gameOver() {
