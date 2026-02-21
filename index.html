@@ -208,6 +208,171 @@
             font-weight: 600;
         }
         
+        /* Mobile Touch Controls */
+        #mobile-controls {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            pointer-events: auto;
+            z-index: 1000;
+        }
+        
+        @media (pointer: coarse), (max-width: 768px) {
+            #mobile-controls { display: flex; justify-content: space-between; align-items: flex-end; }
+            .controls-info { display: none; }
+            .hud-item { font-size: 14px; padding: 8px 16px; }
+        }
+        
+        .touch-dpad {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .touch-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.85);
+            border: 3px solid rgba(139,90,43,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #8b5a2b;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            transition: transform 0.1s, background 0.1s;
+        }
+        
+        .touch-btn:active, .touch-btn.pressed {
+            transform: scale(0.9);
+            background: rgba(255,200,100,0.9);
+        }
+        
+        .touch-btn.large {
+            width: 85px;
+            height: 85px;
+            font-size: 32px;
+        }
+        
+        .touch-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .touch-btn.jump { background: rgba(135,206,235,0.9); }
+        .touch-btn.shoot { background: rgba(255,221,0,0.9); }
+        
+        /* Love Form */
+        .love-form {
+            background: rgba(255,255,255,0.95);
+            padding: 25px;
+            border-radius: 20px;
+            margin-top: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .love-form h3 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .love-form input, .love-form textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #ffd;
+            border-radius: 12px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 16px;
+            margin-bottom: 12px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .love-form input:focus, .love-form textarea:focus {
+            border-color: #ff6b6b;
+        }
+        
+        .love-form textarea {
+            height: 80px;
+            resize: none;
+        }
+        
+        .love-form button {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .love-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,107,0.4);
+        }
+        
+        .love-form .skip-btn {
+            background: transparent;
+            color: #8b5a2b;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        
+        /* Love Wall */
+        .love-wall {
+            background: rgba(255,255,255,0.9);
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 15px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .love-wall h4 {
+            color: #8b5a2b;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .love-item {
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+            padding: 10px 15px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .love-item .name {
+            font-weight: 700;
+            color: #ff6b6b;
+        }
+        
+        .love-item .msg {
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .love-sent {
+            color: #4caf50;
+            font-weight: 600;
+            padding: 15px;
+            text-align: center;
+        }
+        
         #win-screen {
             background: linear-gradient(180deg, #fff5f5 0%, #ffe4e4 100%);
         }
@@ -392,7 +557,25 @@
                     <div class="stat-label">Best Combo</div>
                 </div>
             </div>
-            <button class="btn" id="play-again-btn">🎮 Play Again</button>
+            
+            <div class="love-form" id="love-form">
+                <h3>💌 Send Love to Punch!</h3>
+                <input type="text" id="player-name" placeholder="Your name" maxlength="30">
+                <textarea id="player-message" placeholder="Leave a message for Punch... (optional)" maxlength="200"></textarea>
+                <button type="button" id="send-love-btn">❤️ Send Love</button>
+                <button type="button" class="skip-btn" id="skip-love-btn">Skip</button>
+            </div>
+            
+            <div class="love-sent" id="love-sent" style="display:none;">
+                ✅ Your love has been sent to Punch! 💕
+            </div>
+            
+            <div class="love-wall" id="love-wall">
+                <h4>💕 Recent Love for Punch</h4>
+                <div id="love-messages">Loading...</div>
+            </div>
+            
+            <button class="btn" id="play-again-btn" style="margin-top:15px;">🎮 Play Again</button>
         </div>
         
         <div id="game-over" class="screen-overlay hidden">
@@ -402,14 +585,151 @@
         </div>
         
         <div class="achievement-popup" id="achievement">🏆 First Banana!</div>
+        
+        <!-- Mobile Touch Controls -->
+        <div id="mobile-controls">
+            <div class="touch-dpad">
+                <button class="touch-btn" id="touch-left">◀</button>
+                <button class="touch-btn" id="touch-right">▶</button>
+            </div>
+            <div class="touch-actions">
+                <button class="touch-btn large shoot" id="touch-shoot">🍌</button>
+                <button class="touch-btn large jump" id="touch-jump">⬆</button>
+            </div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/three@0.150.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script>
 // ============================================
 // PUNCH - A Heartwarming Adventure
-// Polished Edition with Idle Animations
+// Polished Edition with Mobile + Love Tracker
 // ============================================
+
+// Supabase setup for love messages
+const SUPABASE_URL = 'https://nrgjmvikuojxrhyjrbud.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5yZ2ptdmlrdW9qeHJoeWpyYnVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk3NjYwNDcsImV4cCI6MjA1NTM0MjA0N30.hxqD_LYKmOJYbAJoxSTGu7mdjfC_3LiNs-Y-TALpnsA';
+const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+// Load recent love messages
+async function loadLoveMessages() {
+    const container = document.getElementById('love-messages');
+    if (!supabase) {
+        container.innerHTML = '<div class="love-item">Love tracking coming soon!</div>';
+        return;
+    }
+    
+    try {
+        const { data, error } = await supabase
+            .from('punch_love')
+            .select('player_name, message, score, created_at')
+            .order('created_at', { ascending: false })
+            .limit(10);
+        
+        if (error) throw error;
+        
+        if (!data || data.length === 0) {
+            container.innerHTML = '<div class="love-item">Be the first to send love to Punch!</div>';
+            return;
+        }
+        
+        container.innerHTML = data.map(item => `
+            <div class="love-item">
+                <span class="name">${escapeHtml(item.player_name)}</span>
+                ${item.message ? `<div class="msg">"${escapeHtml(item.message)}"</div>` : ''}
+            </div>
+        `).join('');
+    } catch (e) {
+        container.innerHTML = '<div class="love-item">Could not load messages</div>';
+    }
+}
+
+// Send love to Punch
+async function sendLove(name, message, score, bananas, maxCombo) {
+    if (!supabase || !name.trim()) return false;
+    
+    try {
+        const { error } = await supabase
+            .from('punch_love')
+            .insert({
+                player_name: name.trim().substring(0, 30),
+                message: message.trim().substring(0, 200) || null,
+                score: score,
+                bananas: bananas,
+                max_combo: maxCombo
+            });
+        
+        if (error) throw error;
+        return true;
+    } catch (e) {
+        console.error('Failed to send love:', e);
+        return false;
+    }
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Touch controls state
+const touchState = {
+    left: false,
+    right: false,
+    jump: false,
+    shoot: false
+};
+
+// Setup touch controls
+function setupTouchControls() {
+    const leftBtn = document.getElementById('touch-left');
+    const rightBtn = document.getElementById('touch-right');
+    const jumpBtn = document.getElementById('touch-jump');
+    const shootBtn = document.getElementById('touch-shoot');
+    
+    function handleTouch(btn, key, isStart) {
+        if (!btn) return;
+        touchState[key] = isStart;
+        btn.classList.toggle('pressed', isStart);
+    }
+    
+    // Left button
+    leftBtn?.addEventListener('touchstart', (e) => { e.preventDefault(); handleTouch(leftBtn, 'left', true); });
+    leftBtn?.addEventListener('touchend', (e) => { e.preventDefault(); handleTouch(leftBtn, 'left', false); });
+    leftBtn?.addEventListener('touchcancel', (e) => { handleTouch(leftBtn, 'left', false); });
+    
+    // Right button
+    rightBtn?.addEventListener('touchstart', (e) => { e.preventDefault(); handleTouch(rightBtn, 'right', true); });
+    rightBtn?.addEventListener('touchend', (e) => { e.preventDefault(); handleTouch(rightBtn, 'right', false); });
+    rightBtn?.addEventListener('touchcancel', (e) => { handleTouch(rightBtn, 'right', false); });
+    
+    // Jump button
+    jumpBtn?.addEventListener('touchstart', (e) => { e.preventDefault(); handleTouch(jumpBtn, 'jump', true); });
+    jumpBtn?.addEventListener('touchend', (e) => { e.preventDefault(); handleTouch(jumpBtn, 'jump', false); });
+    jumpBtn?.addEventListener('touchcancel', (e) => { handleTouch(jumpBtn, 'jump', false); });
+    
+    // Shoot button - fires once per tap
+    let shootTimeout = null;
+    shootBtn?.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        shootBtn.classList.add('pressed');
+        touchState.shoot = true;
+        // Auto-release shoot after brief moment
+        clearTimeout(shootTimeout);
+        shootTimeout = setTimeout(() => {
+            touchState.shoot = false;
+            shootBtn.classList.remove('pressed');
+        }, 100);
+    });
+}
+
+// Load love messages on page load
+document.addEventListener('DOMContentLoaded', () => {
+    loadLoveMessages();
+    setupTouchControls();
+});
 
 class PunchAudio {
     constructor() {
@@ -703,6 +1023,7 @@ class PunchGame {
         this.decorations = [];
         this.isHugging = false;
         this.hugProgress = 0;
+        this.touchShootFired = false;
         
         this.keys = {};
         this.gameState = 'menu';
@@ -790,6 +1111,26 @@ class PunchGame {
         document.getElementById('start-btn').onclick = () => this.start();
         document.getElementById('retry-btn').onclick = () => this.start();
         document.getElementById('play-again-btn').onclick = () => this.start();
+        
+        // Love form handlers
+        document.getElementById('send-love-btn').onclick = async () => {
+            const name = document.getElementById('player-name').value;
+            const message = document.getElementById('player-message').value;
+            if (!name.trim()) {
+                document.getElementById('player-name').focus();
+                return;
+            }
+            const success = await sendLove(name, message, this.score, this.bananaCount, this.maxCombo);
+            if (success) {
+                document.getElementById('love-form').style.display = 'none';
+                document.getElementById('love-sent').style.display = 'block';
+                loadLoveMessages();
+            }
+        };
+        
+        document.getElementById('skip-love-btn').onclick = () => {
+            document.getElementById('love-form').style.display = 'none';
+        };
         
         this.clock = new THREE.Clock();
         this.animate();
@@ -1631,6 +1972,12 @@ class PunchGame {
         document.getElementById('win-screen').classList.remove('visible');
         document.getElementById('win-screen').classList.add('hidden');
         
+        // Reset love form
+        document.getElementById('love-form').style.display = 'block';
+        document.getElementById('love-sent').style.display = 'none';
+        document.getElementById('player-name').value = '';
+        document.getElementById('player-message').value = '';
+        
         // Show HUD
         document.getElementById('hud').classList.add('visible');
         
@@ -1758,10 +2105,19 @@ class PunchGame {
         const p = this.player;
         const gravity = -38;
         
-        // Input handling
-        const left = this.keys['arrowleft'] || this.keys['a'];
-        const right = this.keys['arrowright'] || this.keys['d'];
-        const jump = this.keys[' '] || this.keys['arrowup'] || this.keys['w'];
+        // Input handling (keyboard + touch)
+        const left = this.keys['arrowleft'] || this.keys['a'] || touchState.left;
+        const right = this.keys['arrowright'] || this.keys['d'] || touchState.right;
+        const jump = this.keys[' '] || this.keys['arrowup'] || this.keys['w'] || touchState.jump;
+        
+        // Touch shoot handling
+        if (touchState.shoot && !this.touchShootFired) {
+            this.shoot();
+            this.touchShootFired = true;
+        }
+        if (!touchState.shoot) {
+            this.touchShootFired = false;
+        }
         
         if (left) {
             p.vx = -p.speed;
