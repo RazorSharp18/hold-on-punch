@@ -610,18 +610,18 @@
 // Supabase setup for love messages
 const SUPABASE_URL = 'https://pfyzoihbebhkjpdpokss.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBmeXpvaWhiZWJoa2pwZHBva3NzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2NTQ5ODUsImV4cCI6MjA4NzIzMDk4NX0.Unx5_O_nUVCqc-m-ILatyVvNInQyyrWDM7X5Z44VZxQ';
-const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 // Load recent love messages
 async function loadLoveMessages() {
     const container = document.getElementById('love-messages');
-    if (!supabase) {
+    if (!supabaseClient) {
         container.innerHTML = '<div class="love-item">Love tracking coming soon!</div>';
         return;
     }
     
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('punch_love')
             .select('player_name, message, score, created_at')
             .order('created_at', { ascending: false })
@@ -647,10 +647,10 @@ async function loadLoveMessages() {
 
 // Send love to Punch
 async function sendLove(name, message, score, bananas, maxCombo) {
-    if (!supabase || !name.trim()) return false;
+    if (!supabaseClient || !name.trim()) return false;
     
     try {
-        const { error } = await supabase
+        const { error } = await supabaseClient
             .from('punch_love')
             .insert({
                 player_name: name.trim().substring(0, 30),
