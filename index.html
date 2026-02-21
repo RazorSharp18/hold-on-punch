@@ -736,6 +736,7 @@ class PunchAudio {
         this.ctx = null;
         this.master = null;
         this.musicPlaying = false;
+        this.ambientPlaying = false;
         this.musicNodes = [];
         this.currentBeat = 0;
     }
@@ -923,6 +924,52 @@ class PunchAudio {
             this.playNote(f, 0.4, 'sine', 0.06, i * 0.12);
         });
     }
+    
+    startAmbient() {
+        if (this.ambientPlaying) return;
+        this.ensure();
+        this.ambientPlaying = true;
+        
+        // Gentle ambient forest sounds for landing page
+        const playAmbientLoop = () => {
+            if (!this.ambientPlaying) return;
+            
+            // Soft wind-like pad
+            const baseFreq = 130 + Math.random() * 30;
+            this.playNote(baseFreq, 2, 'sine', 0.015);
+            this.playNote(baseFreq * 1.5, 2, 'sine', 0.01);
+            this.playNote(baseFreq * 2, 2, 'sine', 0.008);
+            
+            // Occasional bird-like chirp
+            if (Math.random() > 0.7) {
+                const chirpFreq = 800 + Math.random() * 400;
+                setTimeout(() => {
+                    if (this.ambientPlaying) {
+                        this.playNote(chirpFreq, 0.1, 'sine', 0.03);
+                        this.playNote(chirpFreq * 1.2, 0.08, 'sine', 0.02, 0.05);
+                    }
+                }, Math.random() * 1500);
+            }
+            
+            // Gentle chime
+            if (Math.random() > 0.6) {
+                const chimeFreq = [523, 659, 784, 880][Math.floor(Math.random() * 4)];
+                setTimeout(() => {
+                    if (this.ambientPlaying) {
+                        this.playNote(chimeFreq, 0.4, 'sine', 0.02);
+                    }
+                }, Math.random() * 1000);
+            }
+            
+            setTimeout(playAmbientLoop, 2000 + Math.random() * 1000);
+        };
+        
+        playAmbientLoop();
+    }
+    
+    stopAmbient() {
+        this.ambientPlaying = false;
+    }
 }
 
 // Level definitions with rogue monkeys!
@@ -1108,9 +1155,23 @@ class PunchGame {
         });
         window.addEventListener('keyup', e => this.keys[e.key.toLowerCase()] = false);
         
-        document.getElementById('start-btn').onclick = () => this.start();
-        document.getElementById('retry-btn').onclick = () => this.start();
-        document.getElementById('play-again-btn').onclick = () => this.start();
+        // Button handlers - using both onclick and addEventListener for mobile compatibility
+        const startBtn = document.getElementById('start-btn');
+        const retryBtn = document.getElementById('retry-btn');
+        const playAgainBtn = document.getElementById('play-again-btn');
+        
+        const startGame = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.start();
+        };
+        
+        startBtn.onclick = startGame;
+        startBtn.addEventListener('touchend', startGame);
+        retryBtn.onclick = startGame;
+        retryBtn.addEventListener('touchend', startGame);
+        playAgainBtn.onclick = startGame;
+        playAgainBtn.addEventListener('touchend', startGame);
         
         // Love form handlers
         document.getElementById('send-love-btn').onclick = async () => {
@@ -1954,6 +2015,7 @@ class PunchGame {
     }
     
     async start() {
+        this.audio.stopAmbient();
         this.audio.init();
         this.audio.startMusic();
         
@@ -2410,8 +2472,21 @@ class PunchGame {
 }
 
 // Initialize game
+let gameInstance = null;
 window.addEventListener('DOMContentLoaded', () => {
-    new PunchGame();
+    gameInstance = new PunchGame();
+    
+    // Start ambient music on first interaction with landing page
+    const startScreen = document.getElementById('start-screen');
+    const startAmbientOnce = () => {
+        if (gameInstance && gameInstance.audio) {
+            gameInstance.audio.startAmbient();
+        }
+        startScreen.removeEventListener('click', startAmbientOnce);
+        startScreen.removeEventListener('touchstart', startAmbientOnce);
+    };
+    startScreen.addEventListener('click', startAmbientOnce);
+    startScreen.addEventListener('touchstart', startAmbientOnce);
 });
     </script>
 </body>
