@@ -972,82 +972,55 @@ class PunchAudio {
     }
 }
 
-// Level definitions with rogue monkeys!
+// Level definitions - 2 levels with fun challenges!
 const LEVELS = [
     {
         name: "The Forest Edge",
         platforms: [
             { x: 0, y: 0, w: 14, color: 0x8fbc8f },
-            { x: 12, y: 2.5, w: 6, color: 0x90ee90 },
-            { x: 20, y: 5, w: 5, color: 0x8fbc8f },
-            { x: 28, y: 3, w: 7, color: 0x90ee90 },
-            { x: 38, y: 6, w: 5, color: 0x8fbc8f },
-            { x: 46, y: 4, w: 8, color: 0x90ee90 },
+            { x: 14, y: 3, w: 6, color: 0x90ee90 },
+            { x: 22, y: 5, w: 6, color: 0x8fbc8f },
+            { x: 30, y: 3, w: 7, color: 0x90ee90 },
+            { x: 40, y: 5, w: 6, color: 0x8fbc8f },
+            { x: 48, y: 3, w: 8, color: 0x90ee90 },
             { x: 58, y: 0, w: 14, color: 0x8fbc8f },
         ],
         bananas: [
-            { x: 5, y: 3 }, { x: 14, y: 5.5 }, { x: 22, y: 8 },
-            { x: 32, y: 6 }, { x: 40, y: 9 }, { x: 50, y: 7 },
+            { x: 5, y: 3 }, { x: 16, y: 6 }, { x: 24, y: 8 },
+            { x: 34, y: 6 }, { x: 43, y: 8 }, { x: 52, y: 6 },
             { x: 62, y: 3 }
         ],
         rogueMonkeys: [
-            { x: 30, y: 6, patrolMin: 26, patrolMax: 34 },
-            { x: 50, y: 7, patrolMin: 44, patrolMax: 54 }
+            { x: 35, y: 6, patrolMin: 29, patrolMax: 38 }
         ],
         stuffedFriend: { x: 65, y: 3 }
     },
     {
-        name: "Crossing the Stream",
+        name: "Rescue Mission",
         platforms: [
             { x: 0, y: 0, w: 10, color: 0x8fbc8f },
-            { x: 12, y: 2, w: 5, color: 0x90ee90 },
-            { x: 19, y: 4, w: 5, color: 0x8fbc8f },
-            { x: 26, y: 2, w: 5, color: 0x90ee90 },
-            { x: 33, y: 5, w: 5, color: 0x8fbc8f },
-            { x: 41, y: 3, w: 5, color: 0x90ee90 },
-            { x: 49, y: 6, w: 5, color: 0x8fbc8f },
-            { x: 58, y: 3, w: 8, color: 0x90ee90 },
-            { x: 70, y: 0, w: 12, color: 0x8fbc8f },
+            { x: 12, y: 3, w: 6, color: 0x90ee90 },
+            { x: 20, y: 5, w: 5, color: 0x8fbc8f },
+            { x: 27, y: 3, w: 5, color: 0x90ee90 },
+            { x: 34, y: 6, w: 6, color: 0x8fbc8f },
+            { x: 42, y: 4, w: 5, color: 0x90ee90 },
+            { x: 49, y: 6, w: 6, color: 0x8fbc8f },
+            { x: 57, y: 3, w: 6, color: 0x90ee90 },
+            { x: 65, y: 0, w: 12, color: 0x8fbc8f },
         ],
         bananas: [
-            { x: 4, y: 3 }, { x: 16, y: 5.5 }, { x: 24, y: 8 },
-            { x: 32, y: 6 }, { x: 40, y: 9 }, { x: 48, y: 7 },
-            { x: 57, y: 10 }, { x: 68, y: 7 }, { x: 80, y: 3 }
+            { x: 4, y: 3 }, { x: 14, y: 6 }, { x: 22, y: 8 },
+            { x: 30, y: 6 }, { x: 37, y: 9 }, { x: 45, y: 7 },
+            { x: 52, y: 9 }, { x: 60, y: 6 }, { x: 70, y: 3 }
         ],
+        // Golden banana - worth 500 points! (harder to reach)
+        goldenBanana: { x: 37, y: 12 },
         rogueMonkeys: [
-            { x: 15, y: 5, patrolMin: 11, patrolMax: 18 },
-            { x: 35, y: 8, patrolMin: 32, patrolMax: 38 },
-            { x: 52, y: 9, patrolMin: 48, patrolMax: 56 }
+            { x: 22, y: 8, patrolMin: 19, patrolMax: 26 },
+            { x: 45, y: 7, patrolMin: 41, patrolMax: 48 },
+            { x: 60, y: 6, patrolMin: 56, patrolMax: 64 }
         ],
-        stuffedFriend: { x: 82, y: 3 }
-    },
-    {
-        name: "The Big Tree",
-        platforms: [
-            { x: 0, y: 0, w: 12, color: 0x8fbc8f },
-            { x: 10, y: 4, w: 5, color: 0x90ee90 },
-            { x: 18, y: 8, w: 5, color: 0x8fbc8f },
-            { x: 26, y: 5, w: 5, color: 0x90ee90 },
-            { x: 34, y: 10, w: 4, color: 0x8fbc8f },
-            { x: 42, y: 7, w: 5, color: 0x90ee90 },
-            { x: 50, y: 12, w: 4, color: 0x8fbc8f },
-            { x: 58, y: 8, w: 5, color: 0x90ee90 },
-            { x: 66, y: 14, w: 6, color: 0x8fbc8f },
-            { x: 76, y: 10, w: 10, color: 0x90ee90 },
-        ],
-        bananas: [
-            { x: 5, y: 3 }, { x: 12, y: 7 }, { x: 20, y: 11 },
-            { x: 28, y: 8 }, { x: 36, y: 13 }, { x: 44, y: 10 },
-            { x: 52, y: 15 }, { x: 60, y: 11 }, { x: 68, y: 17 },
-            { x: 80, y: 13 }
-        ],
-        rogueMonkeys: [
-            { x: 12, y: 7, patrolMin: 9, patrolMax: 16 },
-            { x: 28, y: 8, patrolMin: 24, patrolMax: 32 },
-            { x: 44, y: 10, patrolMin: 40, patrolMax: 48 },
-            { x: 60, y: 11, patrolMin: 56, patrolMax: 64 }
-        ],
-        stuffedFriend: { x: 80, y: 13 }
+        stuffedFriend: { x: 72, y: 3 }
     }
 ];
 
@@ -1691,6 +1664,48 @@ class PunchGame {
         return { mesh: group, x, y, collected: false, startY: y };
     }
     
+    createGoldenBanana(x, y) {
+        const group = new THREE.Group();
+        
+        // Bigger, golden banana!
+        const curve = new THREE.QuadraticBezierCurve3(
+            new THREE.Vector3(-0.5, 0, 0),
+            new THREE.Vector3(0, 0.5, 0),
+            new THREE.Vector3(0.5, 0, 0)
+        );
+        const tubeGeo = new THREE.TubeGeometry(curve, 20, 0.18, 12, false);
+        const goldenMat = new THREE.MeshLambertMaterial({ color: 0xffd700 });
+        const banana = new THREE.Mesh(tubeGeo, goldenMat);
+        banana.rotation.z = Math.PI / 4;
+        banana.castShadow = true;
+        group.add(banana);
+        
+        // Sparkle glow effect
+        const glowGeo = new THREE.SphereGeometry(0.8, 16, 16);
+        const glowMat = new THREE.MeshBasicMaterial({
+            color: 0xffd700,
+            transparent: true,
+            opacity: 0.3
+        });
+        group.add(new THREE.Mesh(glowGeo, glowMat));
+        
+        // Star particles around it
+        for (let i = 0; i < 6; i++) {
+            const starGeo = new THREE.SphereGeometry(0.08, 6, 6);
+            const starMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            const star = new THREE.Mesh(starGeo, starMat);
+            const angle = (i / 6) * Math.PI * 2;
+            star.position.set(Math.cos(angle) * 0.6, Math.sin(angle) * 0.6, 0);
+            star.userData = { angle, radius: 0.6 };
+            group.add(star);
+        }
+        
+        group.position.set(x, y, 0);
+        this.scene.add(group);
+        
+        return { mesh: group, x, y, collected: false, startY: y };
+    }
+    
     createRogueMonkey(x, y, patrolMin, patrolMax) {
         const group = new THREE.Group();
         
@@ -1936,6 +1951,7 @@ class PunchGame {
         this.projectiles.forEach(p => this.scene.remove(p.mesh));
         this.decorations.forEach(d => this.scene.remove(d));
         if (this.stuffedFriend) this.scene.remove(this.stuffedFriend);
+        if (this.goldenBanana) this.scene.remove(this.goldenBanana.mesh);
         if (this.player?.mesh) this.scene.remove(this.player.mesh);
         
         this.platforms = [];
@@ -1957,6 +1973,12 @@ class PunchGame {
         level.bananas.forEach(b => {
             this.bananas.push(this.createBanana(b.x, b.y));
         });
+        
+        // Create golden banana if exists (special challenge!)
+        this.goldenBanana = null;
+        if (level.goldenBanana) {
+            this.goldenBanana = this.createGoldenBanana(level.goldenBanana.x, level.goldenBanana.y);
+        }
         
         // Create rogue monkeys (enemies!)
         if (level.rogueMonkeys) {
@@ -2260,6 +2282,22 @@ class PunchGame {
             }
         }
         
+        // Golden banana collection (special 500pt bonus!)
+        if (this.goldenBanana && !this.goldenBanana.collected) {
+            const dx = p.x - this.goldenBanana.x;
+            const dy = p.y - this.goldenBanana.mesh.position.y;
+            
+            if (Math.abs(dx) < 1.5 && Math.abs(dy) < 2) {
+                this.goldenBanana.collected = true;
+                this.scene.remove(this.goldenBanana.mesh);
+                this.bananaCount++;
+                this.addScore(500);
+                this.updateHUD();
+                this.audio.win(); // Special sound!
+                this.showAchievement('⭐ GOLDEN BANANA! +500');
+            }
+        }
+        
         // Enemy updates - patrol movement and collision
         for (const enemy of this.enemies) {
             if (!enemy.alive) continue;
@@ -2425,6 +2463,20 @@ class PunchGame {
                 banana.mesh.rotation.y = time;
                 banana.mesh.position.y = banana.startY + Math.sin(time + banana.x * 0.5) * 0.25;
             }
+        }
+        
+        // Animate golden banana (fancy spinning with orbiting stars!)
+        if (this.goldenBanana && !this.goldenBanana.collected) {
+            this.goldenBanana.mesh.rotation.y = time * 1.5;
+            this.goldenBanana.mesh.position.y = this.goldenBanana.startY + Math.sin(time * 2) * 0.4;
+            // Animate orbiting stars
+            this.goldenBanana.mesh.children.forEach((child, i) => {
+                if (child.userData?.angle !== undefined) {
+                    const newAngle = child.userData.angle + time * 2;
+                    child.position.x = Math.cos(newAngle) * 0.7;
+                    child.position.y = Math.sin(newAngle) * 0.7;
+                }
+            });
         }
         
         // Animate stuffed friend
